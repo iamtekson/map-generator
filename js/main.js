@@ -5,8 +5,15 @@ var map = L.map('map').setView([38.8610, 71.2761], 8);
 var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-});
+}).addTo(map);
 
+const mywms = L.tileLayer.wms("http://localhost:8080/geoserver/generateMap/wms", {
+    layers: 'generateMap:jamoat',
+    format: 'image/png',
+    transparent: true,
+    version: '1.1.0',
+    attribution: "country layer"
+}).addTo(map);
 
 //print function in map
 L.control.browserPrint({
@@ -62,7 +69,9 @@ function handleJson(data) {
 $('#select01').change(function () {
     map.eachLayer(function (layer) {
         map.removeLayer(layer)
-    })
+    });
+    map.addLayer(osm)
+    map.addLayer(mywms)
     handleAjax(district)
 
 })

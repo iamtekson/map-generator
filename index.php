@@ -14,7 +14,7 @@
 
 <body>
     <h2>This is simply html file. Now I have to generate map.</h2>
-    <select name="district" id="">
+    <select name="district" id="select01">
         <option value="select district">select district</option>
         <?php
             @include('functions/dbconnect.php');

@@ -2,10 +2,10 @@
 var map = L.map('map').setView([38.8610, 71.2761], 8);
 
 // tile layers
-var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+});
 
 
 //print function in map
@@ -26,10 +26,15 @@ L.control.browserPrint({
 //     new L.GeoJSON(data).addTo(map)
 // })
 
+district = $('#select01').val()
+$('#select01').change(function () {
+    district = $(this).val();
+    console.log(district)
+})
 
 url = "http://localhost:8080/geoserver/generateMap/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=generateMap%3Ajamoat&maxFeatures=50&outputFormat=application%2Fjson"
 // ajax request handler 
-function handleAjax() {
+function handleAjax(value) {
     //Geoserver Web Feature Service
     $.ajax('http://localhost:8080/geoserver/wfs', {
         type: 'GET',
@@ -38,7 +43,7 @@ function handleAjax() {
             version: '1.1.0',
             request: 'GetFeature',
             typename: 'generateMap:jamoat',
-            CQL_FILTER: `jamoat='Bobojon_Ghafurov_Chshmasor'`,
+            CQL_FILTER: `district='${value}'`,
             srsname: 'EPSG:4326',
             outputFormat: 'text/javascript',
         },
@@ -54,4 +59,10 @@ function handleJson(data) {
     selectedArea = L.geoJson(data).addTo(map);
     map.fitBounds(selectedArea.getBounds());
 }
-handleAjax()
+$('#select01').change(function () {
+    map.eachLayer(function (layer) {
+        map.removeLayer(layer)
+    })
+    handleAjax(district)
+
+})

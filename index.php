@@ -14,6 +14,17 @@
 
 <body>
     <h2>This is simply html file. Now I have to generate map.</h2>
+    <select name="district" id="">
+        <option value="select district">select district</option>
+        <?php
+            @include('functions/dbconnect.php');
+            $sql = 'SELECT DISTINCT district FROM public."Export_Output1"';
+            $result=pg_query($db_connection, $sql);
+            while ($row = pg_fetch_array($result)) {
+                echo "<option value='" . $row['district'] . "'>" . $row['district'] . "</option>";
+            }
+        ?>
+    </select>
     <div id="map"></div>
     <?php
     @include('functions/dbconnect.php')

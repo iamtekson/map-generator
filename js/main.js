@@ -11,19 +11,15 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{
 //print function in map
 L.control.browserPrint({
     title: 'Print current Layer',
-    documentTitle: 'Utility Management System',
+    documentTitle: 'Tajikistan portal',
     printModes: [
-        L.control.browserPrint.mode.landscape("Tabloid VIEW", "Tabloid"),
-        L.control.browserPrint.mode.landscape(),
-        "PORTrait",
-        L.control.browserPrint.mode.auto("Auto", "B4"),
-        L.control.browserPrint.mode.custom("Selected area", "B5")
+        L.control.browserPrint.mode.landscape()
     ],
     manualMode: false,
     closePopupsOnPrint: true, //default value
 }).addTo(map);
 
-$.getJSON('data/jamoat_exposure.json', function (data) {
+$.getJSON('data/jamoat.json', function (data) {
     console.log(data)
     new L.GeoJSON(data).addTo(map)
 })

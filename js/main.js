@@ -39,7 +39,6 @@ $('#select01').change(function () {
     console.log(district)
 })
 
-url = "http://localhost:8080/geoserver/generateMap/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=generateMap%3Ajamoat&maxFeatures=50&outputFormat=application%2Fjson"
 // ajax request handler 
 function handleAjax(value) {
     //Geoserver Web Feature Service
@@ -61,9 +60,17 @@ function handleAjax(value) {
     console.log(data)
 }
 
+mystyle = {
+    color: 'red',
+    fill: 'green',
+    opacity: '1'
+}
+
 // the ajax callback function
 function handleJson(data) {
-    selectedArea = L.geoJson(data).addTo(map);
+    selectedArea = L.geoJson(data, {
+        style: mystyle
+    }).addTo(map);
     map.fitBounds(selectedArea.getBounds());
 }
 $('#select01').change(function () {
@@ -73,5 +80,14 @@ $('#select01').change(function () {
     map.addLayer(osm)
     map.addLayer(mywms)
     handleAjax(district)
-
 })
+
+var legend = L.control({ position: 'bottomright' });
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend');
+    return div;
+};
+
+legend.addTo(map);

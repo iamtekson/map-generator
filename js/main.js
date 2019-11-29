@@ -1,5 +1,5 @@
 //map variable
-var map = L.map('map').setView([51.505, -0.09], 13);
+var map = L.map('map').setView([38.8610, 71.2761], 8);
 
 // tile layers
 var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -23,4 +23,7 @@ L.control.browserPrint({
     closePopupsOnPrint: true, //default value
 }).addTo(map);
 
-L.geoJSON('data/data').addTo(map)
+$.getJSON('data/jamoat_exposure.json', function (data) {
+    console.log(data)
+    new L.GeoJSON(data).addTo(map)
+})

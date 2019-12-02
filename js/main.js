@@ -60,16 +60,17 @@ function handleAjax(value) {
     console.log(data)
 }
 
-mystyle = {
-    color: 'red',
-    fill: 'green',
-    opacity: '1'
-}
-
 // the ajax callback function
 function handleJson(data) {
     selectedArea = L.geoJson(data, {
-        style: mystyle
+        style: function (feature) {
+            attr = feature.properties.JAMOAT
+            return {
+                color: 'red',
+                fillColor: getRandomColor(),
+                fillOpacity: '0.91'
+            }
+        }
     }).addTo(map);
     map.fitBounds(selectedArea.getBounds());
 }
@@ -77,7 +78,6 @@ $('#select01').change(function () {
     map.eachLayer(function (layer) {
         map.removeLayer(layer)
     });
-    map.addLayer(osm)
     map.addLayer(mywms)
     handleAjax(district)
 })
@@ -87,7 +87,23 @@ var legend = L.control({ position: 'bottomright' });
 legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend');
+    labels = ['<strong>Jamoats</strong>'],
+        categories = ['jd', 'dfj', 'dskjf', 'dsjf', 'sdfjl', 'dsjf']
+
+    for (var i = 0; i < categories.length; i++) {
+        div.innerHTML += labels.push('<i style="background:' + getRandomColor(categories[i]) + '"></i>' + (categories[i] ? categories[i] : '+'));
+    }
+    div.innerHTML = labels.join('<br>')
     return div;
 };
 
 legend.addTo(map);
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'
+    var color = '#'
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}

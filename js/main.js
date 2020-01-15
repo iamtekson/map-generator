@@ -66,7 +66,7 @@ function handleJson(data) {
         style: function (feature) {
             attr = feature.properties.JAMOAT
             return {
-                color: 'red',
+                color: 'black',
                 fillColor: getRandomColor(),
                 fillOpacity: '0.91'
             }
